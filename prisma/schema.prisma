@@ -1,0 +1,69 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  clients   Client[]
+  invoices   Invoice[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Client{
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String
+  businessId String
+  business   User @relation(fields: [businessId], references: [id])
+  invoices   Invoice[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum InvoiceStatus {
+ DRAFT
+  SENT
+  PAID
+  OVERDUE
+}
+
+model Invoice{
+  id       String   @id @default(uuid())
+  amount    Decimal
+  dueDate   DateTime
+  clientId  String
+  client    Client @relation(fields: [clientId], references: [id])
+  businessId String
+  business   User @relation(fields: [businessId], references: [id])
+  status    InvoiceStatus @default(DRAFT)
+  items     InvoiceItem[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model InvoiceItem {
+  id        String   @id @default(uuid())
+  description String
+  quantity    Int
+  unitPrice       Decimal
+  totalPrice     Decimal
+  invoiceId   String
+  invoice     Invoice @relation(fields: [invoiceId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
