@@ -14,9 +14,17 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid())
+  googleId  String?  @unique
   email     String   @unique
   password  String
   name      String
+  needToChangePassword Boolean @default(false)
+  isEmailVerified Boolean @default(false)
+  pendingEmail String?
+  passwordResetToken PasswordResetToken?
+  refreshTokens RefreshToken[]
+  emailVerificationToken EmailVerificationToken?
+  passwordChangedAt DateTime?
   clients   Client[]
   invoices   Invoice[]
   createdAt DateTime @default(now())
@@ -66,4 +74,34 @@ model InvoiceItem {
   invoice     Invoice @relation(fields: [invoiceId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expiresAt DateTime
+  userId    String   
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expiresAt DateTime
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expiresAt DateTime
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
