@@ -29,7 +29,7 @@ import { User } from "../generated/prisma/client";
 
 const expiresAt = new Date(
   Date.now() +
-    Number(process.env.REFRESH_JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000,
+    Number(process.env.REFRESH_TOKEN_EXPIRES_IN) * 24 * 60 * 60 * 1000,
 );
 
 export const signUp = async (

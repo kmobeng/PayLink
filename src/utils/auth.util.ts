@@ -23,7 +23,7 @@ export const setRefreshTokenCookieOptions = () => {
   let RefreshCookieOptions: any = {
     expires: new Date(
       Date.now() +
-        Number(process.env.REFRESH_JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000,
+        Number(process.env.REFRESH_TOKEN_EXPIRES_IN) * 24 * 60 * 60 * 1000,
     ),
     // secure: true,
     httpOnly: true,
@@ -44,7 +44,7 @@ export const generateToken = (
   res: Response,
 ): void => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET!, {
-    expiresIn: process.env.JWT_EXPIRES_IN!,
+    expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN!,
   } as SignOptions);
   const accessTokenCookieOptions = setAccessTokenCookieOptions();
   res.cookie("accessToken", token, accessTokenCookieOptions);

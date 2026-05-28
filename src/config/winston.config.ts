@@ -1,6 +1,6 @@
 import winston from "winston";
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = process.env.NODE_ENV !== "production";
 
 const levels = {
   error: 0,
@@ -57,7 +57,7 @@ if (!isDev) {
 }
 
 const logger = winston.createLogger({
-  level: isDev ? "debug" : "info",
+  level: isDev ? "http" : "info",
   levels,
   transports,
 });
