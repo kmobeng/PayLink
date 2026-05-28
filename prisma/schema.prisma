@@ -12,12 +12,24 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Provider {
+  local
+  google
+}
+
 model User {
   id        String   @id @default(uuid())
   googleId  String?  @unique
   email     String   @unique
   password  String
   name      String
+  role      String   @default("USER")
+  provider  String   @default("local")
   needToChangePassword Boolean @default(false)
   isEmailVerified Boolean @default(false)
   pendingEmail String?

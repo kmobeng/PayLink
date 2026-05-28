@@ -1,13 +1,16 @@
 declare global {
   namespace Express {
+    interface User {
+      id: string;
+      email: string;
+      role: string;
+      isEmailVerified: boolean;
+      needToChangePassword: boolean;
+      provider: string;
+    }
+
     interface Request {
-      user?: {
-        id: string;
-        email: string;
-        isEmailVerified: boolean;
-        needToChangePassword: boolean;
-        provider: string;
-      };
+      user?: User;
     }
   }
 }
