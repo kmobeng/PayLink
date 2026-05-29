@@ -8,6 +8,7 @@ import cookieSession from "cookie-session";
 import passport from "passport";
 import "./config/passport.config";
 import clientRouter from "./routers/client.route";
+import invoiceRouter from "./routers/invoice.route";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/clients", clientRouter);
+app.use("/api/v1/invoices", invoiceRouter);
 
 app.use(errorHandler);
 

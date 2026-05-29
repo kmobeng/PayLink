@@ -11,6 +11,7 @@ import {
   getInvoiceByIdService,
   updateDraftInvoiceByIdService,
   deleteInvoiceByIdService,
+  getInvoicesByClientIdService,
 } from "../services/invoice.service";
 
 export const createInvoice = async (
@@ -27,7 +28,12 @@ export const createInvoice = async (
       throw createError(errorMessages, 400);
     }
 
-    const { clientId, dueDate, items } = parsed.data;
+    const { clientId, dueDate } = parsed.data;
+    const items = parsed.data.items?.map((it: any) => ({
+      description: it.description ?? "",
+      quantity: it.quantity ?? 0,
+      unitPrice: it.unitPrice ?? 0,
+    }));
 
     const result = await createInvoiceService(
       req.user?.id as string,
@@ -52,7 +58,35 @@ export const getInvoices = async (
 
     const invoices = await getInvoicesService(userId);
 
-    res.status(200).json({ success: true, data: invoices });
+    res
+      .status(200)
+      .json({ success: true, result: invoices.length, data: invoices });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getInvoiceByClientId = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const userId = req.user?.id as string;
+    const parsed = InvoiceParamIdSchema.safeParse(req.params);
+
+    if (!parsed.success) {
+      const errorMessages = parsed.error.issues
+        .map((err: any) => err.message)
+        .join(", ");
+      throw createError(errorMessages, 400);
+    }
+
+    const clientId = parsed.data.invoiceId;
+
+    const result = await getInvoicesByClientIdService(userId, clientId);
+
+    res.status(200).json({ success: true, data: result });
   } catch (error) {
     next(error);
   }
@@ -107,6 +141,7 @@ export const updateDraftInvoiceById = async (
     }
 
     const { clientId, dueDate, items } = parsed.data;
+    
 
     const result = await updateDraftInvoiceByIdService(
       req.user?.id as string,

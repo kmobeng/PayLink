@@ -57,6 +57,32 @@ export const getInvoicesService = async (userId: string) => {
   }
 };
 
+export const getInvoicesByClientIdService = async (
+  userId: string,
+  clientId: string,
+) => {
+    try {
+        const invoices = await prisma.invoice.findMany({
+            where: {
+                businessId: userId,
+                clientId: clientId,
+            },
+            include: {
+                items: true,
+            },
+        });
+
+        if (!invoices || invoices.length === 0) {
+            throw createError("No invoices found for this client", 404);
+        }
+
+        return invoices;
+    }
+    catch (error) {
+        throw error;
+    }
+};
+
 export const getInvoiceByIdService = async (
   userId: string,
   invoiceId: string,
@@ -66,6 +92,9 @@ export const getInvoiceByIdService = async (
       where: {
         businessId: userId,
         id: invoiceId,
+      },
+      include: {
+        items: true,
       },
     });
 
@@ -78,6 +107,7 @@ export const getInvoiceByIdService = async (
     throw error;
   }
 };
+
 
 
 export const updateDraftInvoiceByIdService = async (userId: string,invoiceId: string, clientId?: string, dueDate?: Date, items?: InvoiceItem[])=>{
@@ -118,7 +148,7 @@ export const updateDraftInvoiceByIdService = async (userId: string,invoiceId: st
                       description: item.description,
                       quantity: item.quantity,
                       unitPrice: item.unitPrice,
-                      totalPrice: Number((item as any).quantity) * Number((item as any).unitPrice),
+                      totalPrice: Number(item.quantity) * Number(item.unitPrice),
                     }))
                 }
             }
