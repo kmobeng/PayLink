@@ -45,7 +45,7 @@ export const getClients = async (
   try {
     const result = await getClientsService(req.user?.id!);
 
-    res.status(200).json({ success: true, data: result });
+    res.status(200).json({ success: true,result: result.length, data: result });
   } catch (error) {
     next(error);
   }

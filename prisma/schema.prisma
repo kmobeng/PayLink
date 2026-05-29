@@ -28,8 +28,8 @@ model User {
   email     String   @unique
   password  String
   name      String
-  role      String   @default("USER")
-  provider  String   @default("local")
+  role      Role   @default(USER)
+  provider  Provider   @default(local)
   needToChangePassword Boolean @default(false)
   isEmailVerified Boolean @default(false)
   pendingEmail String?
@@ -46,7 +46,7 @@ model User {
 model Client{
   id        String   @id @default(uuid())
   name      String
-  email     String   @unique
+  email     String   
   phone     String
   businessId String
   business   User @relation(fields: [businessId], references: [id])
@@ -64,8 +64,8 @@ enum InvoiceStatus {
 
 model Invoice{
   id       String   @id @default(uuid())
-  amount    Decimal
   dueDate   DateTime
+  paymentToken String @unique @default(uuid())
   clientId  String
   client    Client @relation(fields: [clientId], references: [id])
   businessId String
