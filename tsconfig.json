@@ -8,7 +8,7 @@
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "commonjs",
-    "target": "es2020",
+    "target": "es2025",
     "types": ["node", "express"],
     "typeRoots": ["./src/@types", "./node_modules/@types"],
     // For nodejs:

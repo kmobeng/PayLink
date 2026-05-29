@@ -23,10 +23,13 @@ export const addClientService = async (
   }
 };
 
-export const getClientsService = async (userId: string) => {
+export const getClientsService = async (userId: string, name?: string) => {
   try {
     const clients = await prisma.client.findMany({
-      where: { businessId: userId },
+      where: {
+        businessId: userId,
+        ...(name ? { name: { contains: name } } : {}),
+      },
     });
 
     if (!clients) {

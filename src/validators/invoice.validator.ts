@@ -23,3 +23,11 @@ export const InvoiceParamIdSchema = z.object({
 });
 
 export const updateDraftInvoiceSchema = createInvoiceSchema.partial();
+
+export const getInvoicesQuerySchema = z.object({
+  status: z
+    .string()
+    .transform((val) => val.toUpperCase())
+    .pipe(z.enum(["DRAFT", "SENT", "PAID"]))
+    .optional(),
+});

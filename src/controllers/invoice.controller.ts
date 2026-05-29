@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import {
   createInvoiceSchema,
+  getInvoicesQuerySchema,
   InvoiceParamIdSchema,
   updateDraftInvoiceSchema,
 } from "../validators/invoice.validator";
@@ -11,8 +12,10 @@ import {
   getInvoiceByIdService,
   updateDraftInvoiceByIdService,
   deleteInvoiceByIdService,
+  sendInvoiceToClientService,
   getInvoicesByClientIdService,
 } from "../services/invoice.service";
+import { InvoiceStatus } from "../generated/prisma/browser";
 
 export const createInvoice = async (
   req: Request,
@@ -56,7 +59,17 @@ export const getInvoices = async (
   try {
     const userId = req.user?.id as string;
 
-    const invoices = await getInvoicesService(userId);
+    const parsed = getInvoicesQuerySchema.safeParse(req.query);
+    if (!parsed.success) {
+      const errorMessages = parsed.error.issues
+        .map((err: any) => err.message)
+        .join(", ");
+      throw createError(errorMessages, 400);
+    }
+
+    const { status } = parsed.data;
+
+    const invoices = await getInvoicesService(userId, status as InvoiceStatus);
 
     res
       .status(200)
@@ -141,7 +154,6 @@ export const updateDraftInvoiceById = async (
     }
 
     const { clientId, dueDate, items } = parsed.data;
-    
 
     const result = await updateDraftInvoiceByIdService(
       req.user?.id as string,
@@ -177,6 +189,31 @@ export const deleteInvoiceById = async (
     );
 
     res.status(200).json({ success: true, data: null });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const sendInvoiceToClient = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const paramParsed = InvoiceParamIdSchema.safeParse(req.params);
+    if (!paramParsed.success) {
+      const errorMessages = paramParsed.error.issues
+        .map((err: any) => err.message)
+        .join(", ");
+      throw createError(errorMessages, 400);
+    }
+
+    const result = await sendInvoiceToClientService(
+      req.user?.id as string,
+      paramParsed.data.invoiceId,
+    );
+
+    res.status(200).json({ success: true, message: "Invoice sent to client successfully"});
   } catch (error) {
     next(error);
   }

@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice</title>
+    <style>
+      @media only screen and (max-width: 600px) {
+        .container {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+
+        .content-cell {
+          padding: 32px 24px 0 24px !important;
+        }
+
+        .stack {
+          display: table-cell !important;
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+
+        .stack-right {
+          text-align: right !important;
+        }
+
+        .stack-right div {
+          text-align: right !important;
+        }
+
+        .cell {
+          padding-left: 10px !important;
+          padding-right: 10px !important;
+        }
+
+        .total-wrap {
+          width: 100% !important;
+        }
+      }
+    </style>
+  </head>
+  <body style="margin: 0; padding: 0; background-color: #ffffff">
+    <table
+      role="presentation"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      width="100%"
+      style="border-collapse: collapse; background-color: #ffffff"
+    >
+      <tr>
+        <td align="center" style="padding: 0 16px">
+          <table
+            role="presentation"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            width="700"
+            class="container"
+            style="border-collapse: collapse; width: 700px; max-width: 700px"
+          >
+            <tr>
+              <td
+                class="content-cell"
+                style="
+                  padding: 48px 48px 0 48px;
+                  font-family: &quot;Inter&quot;, Arial, sans-serif;
+                  color: #000000;
+                "
+              >
+                <table
+                  role="presentation"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  width="100%"
+                  style="border-collapse: collapse"
+                >
+                  <tr>
+                    <td valign="top" class="stack" style="width: 50%">
+                      <div
+                        style="
+                          font-size: 26px;
+                          line-height: 39px;
+                          font-weight: 700;
+                        "
+                      >
+                        {{businessName}}
+                      </div>
+                      <div
+                        style="
+                          font-size: 13px;
+                          line-height: 20.8px;
+                          color: #6b7280;
+                        "
+                      >
+                        {{businessEmail}}
+                      </div>
+                    </td>
+                    <td
+                      valign="top"
+                      align="right"
+                      class="stack stack-right"
+                      style="width: 50%"
+                    >
+                      <div
+                        style="
+                          font-size: 28px;
+                          line-height: 42px;
+                          font-weight: 700;
+                          letter-spacing: 1.68px;
+                          color: #1e3a5f;
+                        "
+                      >
+                        INVOICE
+                      </div>
+                      <div
+                        style="
+                          padding-top: 6px;
+                          font-size: 14px;
+                          line-height: 22.4px;
+                          font-weight: 500;
+                          color: #000000;
+                        "
+                      >
+                        {{invoiceNumber}}
+                      </div>
+                      <div
+                        style="
+                          font-size: 13px;
+                          line-height: 20.8px;
+                          color: #6b7280;
+                        "
+                      >
+                        Issued:
+                        <span style="color: #000000">{{issuedDate}}</span>
+                      </div>
+                      <div
+                        style="
+                          font-size: 13px;
+                          line-height: 20.8px;
+                          color: #6b7280;
+                        "
+                      >
+                        Due: <span style="color: #000000">{{dueDate}}</span>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+
+                <div
+                  style="border-top: 1px solid #e5e7eb; margin: 32px 0 0 0"
+                ></div>
+
+                <div style="padding-top: 32px">
+                  <div
+                    style="
+                      font-size: 11px;
+                      line-height: 17.6px;
+                      letter-spacing: 1.1px;
+                      text-transform: uppercase;
+                      color: #6b7280;
+                    "
+                  >
+                    Bill To
+                  </div>
+                  <div
+                    style="
+                      padding-top: 6px;
+                      font-size: 14px;
+                      line-height: 22.4px;
+                      font-weight: 600;
+                      color: #000000;
+                    "
+                  >
+                    {{clientName}}
+                  </div>
+                  <div
+                    style="font-size: 13px; line-height: 20.8px; color: #6b7280"
+                  >
+                    {{clientEmail}}
+                  </div>
+                  <div
+                    style="font-size: 13px; line-height: 20.8px; color: #6b7280"
+                  >
+                    {{clientPhone}}
+                  </div>
+                </div>
+
+                <div style="padding-top: 32px">
+                  <table
+                    role="presentation"
+                    cellpadding="0"
+                    cellspacing="0"
+                    border="0"
+                    width="100%"
+                    style="border-collapse: collapse"
+                  >
+                    <tr style="background-color: #f5f5f5">
+                      <td
+                        style="
+                          padding: 12px 16px;
+                          font-size: 11px;
+                          line-height: 17.6px;
+                          letter-spacing: 1.1px;
+                          text-transform: uppercase;
+                          color: #6b7280;
+                          font-weight: 600;
+                        "
+                        class="cell"
+                      >
+                        Description
+                      </td>
+                      <td
+                        align="right"
+                        style="
+                          padding: 12px 16px;
+                          font-size: 11px;
+                          line-height: 17.6px;
+                          letter-spacing: 1.1px;
+                          text-transform: uppercase;
+                          color: #6b7280;
+                          font-weight: 600;
+                        "
+                        class="cell"
+                      >
+                        Quantity
+                      </td>
+                      <td
+                        align="right"
+                        style="
+                          padding: 12px 16px;
+                          font-size: 11px;
+                          line-height: 17.6px;
+                          letter-spacing: 1.1px;
+                          text-transform: uppercase;
+                          color: #6b7280;
+                          font-weight: 600;
+                        "
+                        class="cell"
+                      >
+                        Unit Price
+                      </td>
+                      <td
+                        align="right"
+                        style="
+                          padding: 12px 16px;
+                          font-size: 11px;
+                          line-height: 17.6px;
+                          letter-spacing: 1.1px;
+                          text-transform: uppercase;
+                          color: #6b7280;
+                          font-weight: 600;
+                        "
+                        class="cell"
+                      >
+                        Total
+                      </td>
+                    </tr>
+                    {{itemRows}}
+                  </table>
+                </div>
+
+                <div style="padding-top: 24px">
+                  <table
+                    role="presentation"
+                    cellpadding="0"
+                    cellspacing="0"
+                    border="0"
+                    width="100%"
+                    style="border-collapse: collapse"
+                  >
+                    <tr>
+                      <td></td>
+                      <td width="300" align="right" class="total-wrap">
+                        <table
+                          role="presentation"
+                          cellpadding="0"
+                          cellspacing="0"
+                          border="0"
+                          width="100%"
+                          style="border-collapse: collapse"
+                        >
+                          <tr>
+                            <td
+                              style="
+                                padding: 8px 0;
+                                font-size: 14px;
+                                line-height: 22.4px;
+                                color: #6b7280;
+                              "
+                            >
+                              Subtotal
+                            </td>
+                            <td
+                              align="right"
+                              style="
+                                padding: 8px 0;
+                                font-size: 14px;
+                                line-height: 22.4px;
+                                color: #000000;
+                              "
+                            >
+                              {{subtotal}}
+                            </td>
+                          </tr>
+                          <tr>
+                            <td
+                              colspan="2"
+                              style="
+                                border-top: 2px solid #1e3a5f;
+                                padding-top: 14px;
+                              "
+                            >
+                              <table
+                                role="presentation"
+                                cellpadding="0"
+                                cellspacing="0"
+                                border="0"
+                                width="100%"
+                                style="border-collapse: collapse"
+                              >
+                                <tr>
+                                  <td
+                                    style="
+                                      font-size: 16px;
+                                      line-height: 25.6px;
+                                      color: #1e3a5f;
+                                      font-weight: 700;
+                                    "
+                                  >
+                                    Total
+                                  </td>
+                                  <td
+                                    align="right"
+                                    style="
+                                      font-size: 16px;
+                                      line-height: 25.6px;
+                                      color: #1e3a5f;
+                                      font-weight: 700;
+                                    "
+                                  >
+                                    {{total}}
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>
+                          </tr>
+                        </table>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <div style="padding-top: 64px; text-align: center">
+                  <div
+                    style="font-size: 13px; line-height: 20.8px; color: #6b7280"
+                  >
+                    Thank you for your business
+                  </div>
+                  <div
+                    style="
+                      padding-top: 4px;
+                      font-size: 12px;
+                      line-height: 19.2px;
+                      color: #6b7280;
+                    "
+                  >
+                    Created with PayLink
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

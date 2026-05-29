@@ -72,6 +72,9 @@ model Invoice{
   business   User @relation(fields: [businessId], references: [id])
   status    InvoiceStatus @default(DRAFT)
   items     InvoiceItem[]
+  invoiceNumber String   @unique
+  sentAt   DateTime?
+  paidAt   DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

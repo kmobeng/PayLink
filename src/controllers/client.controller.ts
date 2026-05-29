@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import {
   addClientSchema,
   getClientByIdSchema,
+  getClientQuerySchema,
   updateClientSchema,
 } from "../validators/client.validator";
 import { createError } from "../utils/createError.util";
@@ -43,9 +44,21 @@ export const getClients = async (
   next: NextFunction,
 ) => {
   try {
-    const result = await getClientsService(req.user?.id!);
+    const parsed = getClientQuerySchema.safeParse(req.query);
+    if (!parsed.success) {
+      const errorMessages = parsed.error.issues
+        .map((err: any) => err.message)
+        .join(", ");
+      throw createError(errorMessages, 400);
+    }
 
-    res.status(200).json({ success: true,result: result.length, data: result });
+    const { name } = parsed.data;
+
+    const result = await getClientsService(req.user?.id!, name);
+
+    res
+      .status(200)
+      .json({ success: true, result: result.length, data: result });
   } catch (error) {
     next(error);
   }
